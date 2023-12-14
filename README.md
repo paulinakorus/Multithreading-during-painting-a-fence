@@ -24,13 +24,12 @@ Każdy malarz
 - Dzięki temu założeniu generowanym wątkom będzie można przypisać jednoliterową etykietę, zaczynając od a. 
 - Litery przypisane malarzom powinny być wykorzystane do wskazania, którą sztachetę pomalował dany malarz.
 
-Wiaderko
+# Wiaderko
 - każdy malarz ma wiaderko z farbą, która się zużywa (można przyjąć, że pojemność wiaderka wystarcza na pomalowanie j sztachet). 
 - Co jakiś czas malarz wiaderko z farbą musi być uzupełniane (zakładamy, że uzupełnianie wiaderka następuje po całkowitym wyczerpaniu farby). 
 - Uzupełnianie farby odbywa się poprzez jej pobranie ze wspólnego zbiornika, 
 	- zbiornika do którego farbę dostarcza osobny wątek dostawcy.
-
-Wizualizacja
+# Wizualizacja
 Wizualizacja stanu wątków chyba najłatwiej zrealizować korzystając z etykiet tekstowych umieszczanych na panelu jak na poniższym schemacie:
 - . [100] .
 - a  b  c  d  e
