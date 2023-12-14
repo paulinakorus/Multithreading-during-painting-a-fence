@@ -3,9 +3,8 @@ package org.example;
 import org.example.model.Fence;
 import org.example.model.PaintContainer;
 import org.example.model.Painter;
-import org.example.view.DisplayView;
+import org.example.service.view.DisplayView;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {

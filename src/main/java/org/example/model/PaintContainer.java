@@ -16,6 +16,28 @@ public class PaintContainer {
         return volume;
     }
 
+    public synchronized void refillContainer(){
+        PaintSupplier supplier = new PaintSupplier(this);
+        supplier.refillContainter();
+    }
+
+    public synchronized void getPaint(Painter painter){
+        int backetVolume = painter.getBucket().getVolume();
+        if(!isEmpty()){
+            if((leftPaint - backetVolume) > 0){
+                leftPaint -= backetVolume;
+                painter.getBucket().setLeftPaint(backetVolume);
+            } else {
+                painter.getBucket().setLeftPaint(leftPaint);
+                leftPaint = 0;
+            }
+        }
+    }
+    public boolean isEmpty(){
+        if(leftPaint == 0)
+            return true;
+        return false;
+    }
     public void setVolume(int volume) {
         this.volume = volume;
     }

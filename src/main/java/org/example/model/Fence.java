@@ -21,6 +21,8 @@ public class Fence {
         }
     }
 
+
+
     public Status getStatus() {
         return status;
     }
