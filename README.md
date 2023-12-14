@@ -32,10 +32,10 @@ Wiaderko
 
 Wizualizacja
 	Wizualizacja stanu wątków chyba najłatwiej zrealizować korzystając z etykiet tekstowych umieszczanych na panelu jak na poniższym schemacie:
-	. [100] .
-	a  b  c  d  e
-	1  4  4  2  0
-	| a a a . . . | b . . . . . | c . . . . . | d d . . . . | e e e e . . | 
+	- . [100] .
+	- a  b  c  d  e
+	- 1  4  4  2  0
+	- | a a a . . . | b . . . . . | c . . . . . | d d . . . . | e e e e . . | 
 
 W pierwszej linii wypisany jest stan zbiornika z farbą 
 	- w miejsce kropek powinna pojawić się literki wątku dostawcy, jeśli ten aktualnie uzupełnia zbiornik (po lewej) 
