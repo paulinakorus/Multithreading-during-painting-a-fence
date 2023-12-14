@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Fence {
-    private Status status;
+    private Status fenceStatus;
     private int segmentsNumber;
     private int lenghtOfSegment;
     List<Segment> segmentList = new ArrayList<>();
@@ -14,21 +14,38 @@ public class Fence {
     public Fence(int segmentsNumber, int lenghtOfSegment){
         this.segmentsNumber = segmentsNumber;
         this.lenghtOfSegment = lenghtOfSegment;
-        status = Status.Unpainted;
+        fenceStatus = Status.Unpainted;
 
         for(int i=0; i<segmentsNumber; i++){
             segmentList.add(new Segment(lenghtOfSegment));
         }
     }
 
+    public List<Segment> findSegmentByStatus(Status segmentStatus){
+        return segmentList.stream().filter(segment -> segment.getStatus().equals(segmentStatus)).toList();
+    }
 
+    public Segment findSegmentToWorkOn(){
+        List<Segment> unpaintedSegments = findSegmentByStatus(Status.Unpainted);
+        if(unpaintedSegments != null){
+            return unpaintedSegments.get(0);
+        } else {
+            List<Segment> paintedSegments = findSegmentByStatus(Status.Painted);
+            if (paintedSegments != null) {
+                return paintedSegments.get(0);
+            } else {
+                fenceStatus = Status.Painted;
+                return null;
+            }
+        }
+    }
 
     public Status getStatus() {
-        return status;
+        return fenceStatus;
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        this.fenceStatus = status;
     }
 
     public List<Segment> getSegmentList() {

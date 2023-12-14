@@ -5,8 +5,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Executor {
 
-    //CachedThreadPool executor create new thread when needed and automatically terminates thread if it's not used
-    //for 60 seconds to save memory
     private static final ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     public static void execute(Runnable job) {
@@ -14,8 +12,6 @@ public class Executor {
     }
 
     public static void interruptAll() {
-        //Interrupts all active threads that are currently handled by executor
         poolExecutor.shutdownNow();
     }
-
 }
