@@ -6,7 +6,7 @@ public class Plank {
     private int id;
     private Status status;
     private Double progress;
-    private Painter paintedBy;
+    private Painter paintedBy = null;
 
     public Plank(int id){
         this.id = id;

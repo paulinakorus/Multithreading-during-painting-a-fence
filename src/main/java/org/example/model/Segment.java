@@ -11,8 +11,13 @@ public class Segment {
     private int lenght;
     private List<Plank> plankList = new ArrayList<>();
     public Segment(int lenght){
+        id+=1;
         this.lenght = lenght;
         this.status = Status.Unpainted;
+
+        for(int i=0; i<lenght; i++){
+            plankList.add(new Plank(i+1));
+        }
     }
 
     public static int getId() {

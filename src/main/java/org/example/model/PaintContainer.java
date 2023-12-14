@@ -4,11 +4,12 @@ public class PaintContainer {
     private int volume;
     private volatile int leftPaint;
     private volatile Boolean refilling;
-    private volatile Painter usingBy;
+    private volatile Painter usingBy = null;
 
     public PaintContainer(int volume){
         this.volume = volume;
         refilling = false;
+        leftPaint = volume;
     }
 
     public int getVolume() {

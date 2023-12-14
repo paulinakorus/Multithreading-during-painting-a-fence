@@ -7,10 +7,18 @@ import java.util.List;
 
 public class Fence {
     private Status status;
+    private int segmentsNumber;
+    private int lenghtOfSegment;
     List<Segment> segmentList = new ArrayList<>();
 
-    public Fence(){
+    public Fence(int segmentsNumber, int lenghtOfSegment){
+        this.segmentsNumber = segmentsNumber;
+        this.lenghtOfSegment = lenghtOfSegment;
         status = Status.Unpainted;
+
+        for(int i=0; i<segmentsNumber; i++){
+            segmentList.add(new Segment(lenghtOfSegment));
+        }
     }
 
     public Status getStatus() {
