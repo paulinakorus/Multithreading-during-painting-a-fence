@@ -18,18 +18,18 @@ Zakładamy, że aplikacja będzie pełnić rolę symulatora akcji malowania wiel
 		- Gdy do malowania współmalowanego segmentu dołączy kolejny malarz, to powinnien zająć się pracą od połowy najdłuższej sekcji tego segmentu jeszcze 				niepomalowanej. 
 		- Przydział kolejnych części do malowania powinien odbywać się według takiego samego schematu.
 
-Każdy malarz 
+## Malarz 
 - powinien być reprezentowany przez osobny wątek. 
 - Można przyjąć założenie, że liczba aktywnych malarzy nie może być większa niż 25. 
 - Dzięki temu założeniu generowanym wątkom będzie można przypisać jednoliterową etykietę, zaczynając od a. 
 - Litery przypisane malarzom powinny być wykorzystane do wskazania, którą sztachetę pomalował dany malarz.
 
-# Wiaderko
+## Wiaderko
 - każdy malarz ma wiaderko z farbą, która się zużywa (można przyjąć, że pojemność wiaderka wystarcza na pomalowanie j sztachet). 
 - Co jakiś czas malarz wiaderko z farbą musi być uzupełniane (zakładamy, że uzupełnianie wiaderka następuje po całkowitym wyczerpaniu farby). 
 - Uzupełnianie farby odbywa się poprzez jej pobranie ze wspólnego zbiornika, 
 	- zbiornika do którego farbę dostarcza osobny wątek dostawcy.
-# Wizualizacja
+## Wizualizacja
 Wizualizacja stanu wątków chyba najłatwiej zrealizować korzystając z etykiet tekstowych umieszczanych na panelu jak na poniższym schemacie:
 - . [100] .
 - a  b  c  d  e
