@@ -29,6 +29,8 @@ public class StarterFrame extends JFrame{
         this.setSize(700, 500);                            // setting size
         this.setVisible(true);                                         // making frame visible
         this.add(startPanel);
+
+        setUpButtons();
     }
 
     private void setUpButtons(){
@@ -37,7 +39,7 @@ public class StarterFrame extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource()==insertButton){
                     int numberOfSegments = Integer.parseInt(segmentsNumberField.getText());
-                    int lenghtOfSegment = Integer.parseInt(segmentsLenghtLabel.getText());
+                    int lenghtOfSegment = Integer.parseInt(segmentLenghtField.getText());
                     int volumeOfContainer = Integer.parseInt(containerVolumeField.getText());
                     int paintersNumber = Integer.parseInt(paintersNumberField.getText());
 

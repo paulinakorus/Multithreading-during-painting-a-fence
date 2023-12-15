@@ -27,7 +27,7 @@ public class DisplayView {
     public String paintersBucketsLine(){
         String line = "";
         for (Painter painter : Painter.getPainterList()) {
-            line += painter.getBucket().getLeftPaint() + " ";
+            line += painter.getBucket().getLeftPaint() + "  ";
         }
         return line;
     }
