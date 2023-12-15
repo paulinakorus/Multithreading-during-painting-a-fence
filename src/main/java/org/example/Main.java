@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.GUI.StarterFrame;
 import org.example.model.*;
 import org.example.model.enums.Status;
 import org.example.service.view.DisplayView;
@@ -49,5 +50,8 @@ public class Main {
         planks.get(9).setStatus(Status.Painted);
 
         List<List<Plank>> unpaintedPlanksList = segment.getUnpaintedPlanksList();
+        List<Plank> longest = segment.getLongestUnpaintedPlanksList();
+
+        StarterFrame frame = new StarterFrame();
     }
 }

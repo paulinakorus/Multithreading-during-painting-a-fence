@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.example.GUI.StarterFrame">
+  <grid id="27dc6" binding="startPanel" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="639" height="400"/>
+    </constraints>
+    <properties>
+      <background color="-1261150"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="49a50" class="javax.swing.JLabel" binding="paintingLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Times New Roman" size="36" style="1"/>
+          <foreground color="-1"/>
+          <text value="Painting"/>
+        </properties>
+      </component>
+      <component id="29ea7" class="javax.swing.JTextField" binding="paintersNumberField">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-5272464"/>
+          <font name="Times New Roman" size="16"/>
+          <foreground color="-1"/>
+        </properties>
+      </component>
+      <component id="548a3" class="javax.swing.JTextField" binding="segmentsNumberField">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-5272464"/>
+          <font name="Times New Roman" size="16"/>
+          <foreground color="-1"/>
+        </properties>
+      </component>
+      <component id="a4844" class="javax.swing.JTextField" binding="segmentLenghtField">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-5272464"/>
+          <font name="Times New Roman" size="16"/>
+          <foreground color="-1"/>
+        </properties>
+      </component>
+      <component id="dca70" class="javax.swing.JLabel" binding="paintersNumberLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Times New Roman" size="20" style="1"/>
+          <foreground color="-1"/>
+          <text value="Painters number"/>
+        </properties>
+      </component>
+      <component id="3984c" class="javax.swing.JLabel" binding="segmentsNumberLabel">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Times New Roman" size="20" style="1"/>
+          <foreground color="-1"/>
+          <text value="Segments number"/>
+        </properties>
+      </component>
+      <component id="2a8d9" class="javax.swing.JLabel" binding="segmentsLenghtLabel">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Times New Roman" size="20" style="1"/>
+          <foreground color="-1"/>
+          <text value="Segments lenght"/>
+        </properties>
+      </component>
+      <component id="90ae0" class="javax.swing.JButton" binding="insertButton">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-5272464"/>
+          <font name="Times New Roman" size="18"/>
+          <foreground color="-1"/>
+          <text value="Insert"/>
+        </properties>
+      </component>
+      <component id="5647b" class="javax.swing.JLabel" binding="containerVolumeLabel">
+        <constraints>
+          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Times New Roman" size="20" style="1"/>
+          <foreground color="-1"/>
+          <text value="Container volume"/>
+        </properties>
+      </component>
+      <component id="17bdf" class="javax.swing.JTextField" binding="containerVolumeField">
+        <constraints>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-5272464"/>
+          <font name="Times New Roman" size="16"/>
+          <foreground color="-1"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

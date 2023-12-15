@@ -3,13 +3,15 @@ package org.example.model;
 import org.example.model.enums.Status;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Fence {
     private Status fenceStatus;
-    private int segmentsNumber;
-    private int lenghtOfSegment;
-    List<Segment> segmentList = new ArrayList<>();
+    private static int segmentsNumber;
+    private static int lenghtOfSegment;
+    private static Fence INSTANCE = null;
+    private List<Segment> segmentList = Collections.synchronizedList(new ArrayList<>());
 
     public Fence(int segmentsNumber, int lenghtOfSegment){
         this.segmentsNumber = segmentsNumber;
@@ -38,6 +40,13 @@ public class Fence {
                 return null;
             }
         }
+    }
+
+    public static Fence getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new Fence(segmentsNumber, lenghtOfSegment);
+        }
+        return INSTANCE;
     }
 
     public Status getStatus() {

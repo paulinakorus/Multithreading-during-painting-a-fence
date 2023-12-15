@@ -2,16 +2,14 @@ package org.example.model;
 
 import org.example.model.enums.Status;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Segment {
     private static int id;
     private Status status;
     private int lenght;
-    private List<Plank> plankList = new ArrayList<>();
+    private List<Plank> plankList = Collections.synchronizedList(new ArrayList<>());
     public Segment(int lenght){
         id+=1;
         this.lenght = lenght;
@@ -23,10 +21,11 @@ public class Segment {
     }
 
     public List<Plank> getLongestUnpaintedPlanksList(){
-        return getUnpaintedPlanksList()
-                .stream()
-                .max((list1, list2) -> Integer.compare(list1.size(), list2.size()))
-                .orElseThrow();
+        return getUnpaintedPlanksList().stream()
+                .map(List::stream)
+                .map(innerList -> innerList.collect(Collectors.toList()))
+                .max(Comparator.comparingInt(List::size))
+                .orElse(null);
     }
 
     public List<List<Plank>> getUnpaintedPlanksList(){
