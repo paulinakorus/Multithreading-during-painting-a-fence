@@ -10,29 +10,38 @@ public class DisplayView {
         this.fence = fence;
         this.container = container;
     }
-    public void viewData(){
-
+    public String firstLine(){
         Character refillingChar = container.getRefilling() ? 'S' : '.';
         Character refillingPainter = container.getUsingBy() != null ? container.getUsingBy().getName() : '.';
-        System.out.println(refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
-        for (Painter painter : Painter.getPainterList()) {
-            System.out.print(painter.getName() + " ");
-        }
-        System.out.print("\n");
+        return (refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
+    }
 
+    public String paintersNamesLine(){
+        String line = "";
         for (Painter painter : Painter.getPainterList()) {
-            System.out.print(painter.getBucket().getLeftPaint() + " ");
+            line += painter.getName() + " ";
         }
-        System.out.print("\n");
+        return line;
+    }
 
+    public String paintersBucketsLine(){
+        String line = "";
+        for (Painter painter : Painter.getPainterList()) {
+            line += painter.getBucket().getLeftPaint() + " ";
+        }
+        return line;
+    }
+
+    public String fenceLine(){
         Character painterChar;
-        System.out.print("|");
+        String line = "|";
         for (Segment segment : fence.getSegmentList()) {
             for (Plank plank : segment.getPlankList()) {
                 painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
-                System.out.print(painterChar);
+                line += painterChar;
             }
-            System.out.print("|");
+            line += "|";
         }
+        return line;
     }
 }
