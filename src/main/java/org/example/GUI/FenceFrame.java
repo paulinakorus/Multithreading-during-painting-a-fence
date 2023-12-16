@@ -44,8 +44,10 @@ public class FenceFrame extends JFrame{
 
     public void setUpLabels() {
         new Thread(() -> {
-            String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
-            SwingUtilities.invokeLater(() -> setTextToLabels(line));
+            while(true){
+                String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
+                SwingUtilities.invokeLater(() -> setTextToLabels(line));
+            }
         }).start();
     }
 
