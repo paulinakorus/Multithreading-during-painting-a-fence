@@ -3,6 +3,7 @@ package org.example.model;
 import org.example.model.enums.Status;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Segment {
@@ -67,6 +68,22 @@ public class Segment {
             newList.add(wholeList.get(i));
         }
         return newList;
+    }
+
+    public synchronized boolean paintPlank(Plank plank, Painter painter) {
+        if (!plank.getStatus().equals(Status.Unpainted)) {
+            return false;
+        }
+        try {
+            plank.setPaintedBy(painter);
+            plank.setStatus(Status.InProcces);
+            TimeUnit.SECONDS.sleep(2);
+            plank.setStatus(Status.Painted);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public int getIndexOfStart(List<Plank> plankList){

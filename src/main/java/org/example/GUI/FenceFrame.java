@@ -43,10 +43,13 @@ public class FenceFrame extends JFrame{
     }
 
     public void setUpLabels() {
-        containerLabel.setText(displayView.firstLine());
-        paintersNamesLabel.setText(displayView.paintersNamesLine());
-        paintersBucketsLabel.setText(displayView.paintersBucketsLine());
-        fenceLineLabel.setText(displayView.fenceLine());
+        DisplayView view = new DisplayView(fence, container);
+        synchronized (displayView){
+            containerLabel.setText(displayView.firstLine());
+            paintersNamesLabel.setText(displayView.paintersNamesLine());
+            paintersBucketsLabel.setText(displayView.paintersBucketsLine());
+            fenceLineLabel.setText(displayView.fenceLine());
+        }
     }
 
     public void setUpContainerLabel(DisplayView view){
@@ -74,5 +77,29 @@ public class FenceFrame extends JFrame{
             INSTANCE = new FenceFrame(fence, container, painterList);
         }
         return INSTANCE;
+    }
+
+    public static Fence getFence() {
+        return fence;
+    }
+
+    public static void setFence(Fence fence) {
+        FenceFrame.fence = fence;
+    }
+
+    public static PaintContainer getContainer() {
+        return container;
+    }
+
+    public static void setContainer(PaintContainer container) {
+        FenceFrame.container = container;
+    }
+
+    public static List<Painter> getPainterList() {
+        return painterList;
+    }
+
+    public static void setPainterList(List<Painter> painterList) {
+        FenceFrame.painterList = painterList;
     }
 }

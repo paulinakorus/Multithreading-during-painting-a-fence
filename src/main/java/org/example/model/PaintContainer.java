@@ -26,7 +26,7 @@ public class PaintContainer {
     public synchronized void getPaint(Painter painter){
         int backetVolume = painter.getBucket().getVolume();
         if(!isEmpty()){
-            if((leftPaint - backetVolume) > 0){
+            if((leftPaint - backetVolume) >= 0){
                 leftPaint -= backetVolume;
                 painter.getBucket().setLeftPaint(backetVolume);
             } else {

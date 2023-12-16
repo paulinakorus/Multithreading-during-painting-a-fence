@@ -17,8 +17,8 @@ public class PaintSupplier implements Runnable{
             synchronized (container) {
                 TimeUnit.SECONDS.sleep(2);
                 container.setLeftPaint(container.getVolume());
-                System.out.println("Pain supplied.");
-                fenceFrame.setUpLabels();
+                System.out.println("Paint supplied");
+                //fenceFrame.setUpLabels();
             }
 
         } catch (InterruptedException e) {
@@ -29,13 +29,12 @@ public class PaintSupplier implements Runnable{
     public void run() {
         while (true) {
             try {
-                TimeUnit.SECONDS.sleep(7);
+                TimeUnit.SECONDS.sleep(2);
                 if(container.isEmpty())
                     refillContainter();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-
         }
     }
 }
