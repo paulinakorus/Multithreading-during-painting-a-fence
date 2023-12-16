@@ -4,13 +4,14 @@ import org.example.model.Fence;
 import org.example.model.PaintContainer;
 import org.example.model.PaintSupplier;
 import org.example.model.Painter;
-import org.example.service.view.DisplayView;
+import org.example.service.DisplayView;
+import org.example.service.Executor;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FenceFrame extends JFrame{
+    private static FenceFrame INSTANCE = null;
     private JPanel fencePanel;
     private JLabel fenceLabel;
     private JLabel containerLabel;
@@ -19,9 +20,9 @@ public class FenceFrame extends JFrame{
     private JLabel fenceLineLabel;
     private JScrollPane scrollPanelFence;
 
-    private Fence fence;
-    private PaintContainer container;
-    List<Painter> painterList;
+    private static Fence fence;
+    private static PaintContainer container;
+    private static List<Painter> painterList;
 
     public FenceFrame(Fence fence, PaintContainer container, List<Painter> painterList){
         this.setTitle("Fence");                                        // set title of frame
@@ -31,18 +32,46 @@ public class FenceFrame extends JFrame{
         this.setVisible(true);                                         // making frame visible
         this.add(fencePanel);
 
-        this.fence = fence;
-        this.container = container;
-        this.painterList = painterList;
+        FenceFrame.fence = fence;
+        FenceFrame.container = container;
+        FenceFrame.painterList = painterList;
 
         setUpLabels();
+        //setUpSimulation();
     }
 
-    private void setUpLabels(){
+    public synchronized void setUpLabels(){
         DisplayView view = new DisplayView(fence, container);
         containerLabel.setText(view.firstLine());
         paintersNamesLabel.setText(view.paintersNamesLine());
         paintersBucketsLabel.setText(view.paintersBucketsLine());
         fenceLineLabel.setText(view.fenceLine());
+    }
+
+    public void setUpContainerLabel(DisplayView view){
+        containerLabel.setText(view.firstLine());
+    }
+
+    public void setUpPaintersLabel(DisplayView view){
+        paintersNamesLabel.setText(view.paintersNamesLine());
+        paintersBucketsLabel.setText(view.paintersBucketsLine());
+    }
+
+    public void setUpFenceLabel(DisplayView view){
+        fenceLineLabel.setText(view.fenceLine());
+    }
+
+    /*public void setUpSimulation(){
+        Executor.execute(new PaintSupplier(container));
+        for (Painter painter : Painter.getPainterList()) {
+            Executor.execute(painter);
+        }
+    }*/
+
+    public static FenceFrame getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new FenceFrame(fence, container, painterList);
+        }
+        return INSTANCE;
     }
 }

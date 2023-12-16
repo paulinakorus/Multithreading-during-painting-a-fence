@@ -1,4 +1,4 @@
-package org.example.service.view;
+package org.example.service;
 
 import org.example.model.*;
 

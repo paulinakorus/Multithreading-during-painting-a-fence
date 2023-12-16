@@ -1,5 +1,7 @@
 package org.example.model;
 
+import org.example.service.Executor;
+
 public class PaintContainer {
     private int volume;
     private volatile int leftPaint;
@@ -16,10 +18,10 @@ public class PaintContainer {
         return volume;
     }
 
-    public synchronized void refillContainer(){
+    /*public synchronized void refillContainer(){
         PaintSupplier supplier = new PaintSupplier(this);
-        supplier.refillContainter();
-    }
+        Executor.execute(supplier);
+    }*/
 
     public synchronized void getPaint(Painter painter){
         int backetVolume = painter.getBucket().getVolume();
@@ -38,6 +40,7 @@ public class PaintContainer {
             return true;
         return false;
     }
+
     public void setVolume(int volume) {
         this.volume = volume;
     }

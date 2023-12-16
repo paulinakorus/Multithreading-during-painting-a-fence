@@ -2,7 +2,9 @@ package org.example.GUI;
 
 import org.example.model.Fence;
 import org.example.model.PaintContainer;
+import org.example.model.PaintSupplier;
 import org.example.model.Painter;
+import org.example.service.Executor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -43,11 +45,12 @@ public class StarterFrame extends JFrame{
                     int volumeOfContainer = Integer.parseInt(containerVolumeField.getText());
                     int paintersNumber = Integer.parseInt(paintersNumberField.getText());
 
-                    createPainters(paintersNumber);
-                    Fence fence = new Fence(numberOfSegments, lenghtOfSegment);
                     PaintContainer container = new PaintContainer(volumeOfContainer);
+                    Executor.execute(new PaintSupplier(container));
+                    Fence fence = new Fence(numberOfSegments, lenghtOfSegment, container);
+                    createPainters(paintersNumber);
 
-                    FenceFrame view = new FenceFrame(fence, container, Painter.getPainterList());
+                    FenceFrame frame = new FenceFrame(fence, container, Painter.getPainterList());
                 }
             }
         });
@@ -55,7 +58,8 @@ public class StarterFrame extends JFrame{
 
     private void createPainters(int paintersNumber){
         for (int i=0; i<paintersNumber; i++){
-            Painter painter = new Painter();
+            var painter = new Painter();
+            Executor.execute(painter);
         }
     }
 }

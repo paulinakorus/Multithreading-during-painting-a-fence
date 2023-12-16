@@ -10,12 +10,14 @@ public class Fence {
     private Status fenceStatus;
     private static int segmentsNumber;
     private static int lenghtOfSegment;
+    private static PaintContainer container;
     private static Fence INSTANCE = null;
     private List<Segment> segmentList = Collections.synchronizedList(new ArrayList<>());
 
-    public Fence(int segmentsNumber, int lenghtOfSegment){
-        this.segmentsNumber = segmentsNumber;
-        this.lenghtOfSegment = lenghtOfSegment;
+    public Fence(int segmentsNumber, int lenghtOfSegment, PaintContainer container){
+        Fence.segmentsNumber = segmentsNumber;
+        Fence.lenghtOfSegment = lenghtOfSegment;
+        Fence.container = container;
         fenceStatus = Status.Unpainted;
 
         for(int i=0; i<segmentsNumber; i++){
@@ -23,11 +25,11 @@ public class Fence {
         }
     }
 
-    public List<Segment> findSegmentByStatus(Status segmentStatus){
+    public synchronized List<Segment> findSegmentByStatus(Status segmentStatus){
         return segmentList.stream().filter(segment -> segment.getStatus().equals(segmentStatus)).toList();
     }
 
-    public Segment findSegmentToWorkOn(){
+    public synchronized Segment findSegmentToWorkOn(){
         List<Segment> unpaintedSegments = findSegmentByStatus(Status.Unpainted);
         if(unpaintedSegments != null){
             return unpaintedSegments.get(0);
@@ -44,9 +46,17 @@ public class Fence {
 
     public static Fence getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new Fence(segmentsNumber, lenghtOfSegment);
+            INSTANCE = new Fence(segmentsNumber, lenghtOfSegment, container);
         }
         return INSTANCE;
+    }
+
+    public static PaintContainer getContainer() {
+        return container;
+    }
+
+    public static void setContainer(PaintContainer container) {
+        Fence.container = container;
     }
 
     public Status getStatus() {

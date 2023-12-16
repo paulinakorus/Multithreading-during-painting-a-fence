@@ -10,6 +10,7 @@ public class Segment {
     private Status status;
     private int lenght;
     private List<Plank> plankList = Collections.synchronizedList(new ArrayList<>());
+    private List<Painter> painterList = new ArrayList<>();
     public Segment(int lenght){
         id+=1;
         this.lenght = lenght;
@@ -18,6 +19,10 @@ public class Segment {
         for(int i=0; i<lenght; i++){
             plankList.add(new Plank(i+1));
         }
+    }
+
+    public void addPainter(Painter painter){
+        painterList.add(painter);
     }
 
     public List<Plank> getLongestUnpaintedPlanksList(){
@@ -51,14 +56,34 @@ public class Segment {
         return splittedList;
     }
 
+    public List<Plank> getFragmentOfSegment(List<Plank> wholeList){
+        int firstIndex;
+        int lastIndex;
+        List<Plank> newList = new ArrayList<>();
+
+        firstIndex = getIndexOfStart(wholeList);
+        lastIndex = getLastIndex(wholeList);
+        for(int i = firstIndex; i<=lastIndex; i++){
+            newList.add(wholeList.get(i));
+        }
+        return newList;
+    }
+
     public int getIndexOfStart(List<Plank> plankList){
         int firstIndex = plankList.get(0).getId()-1;
-        int lenght = plankList.size();
+        int length = plankList.size();
 
         if(lenght%2 == 0)
             return firstIndex + lenght/2;
         else
             return firstIndex + lenght/2 + 1;
+    }
+
+    public int getLastIndex(List<Plank> plankList) {
+        int firstIndex = plankList.get(0).getId() - 1;
+        int length = plankList.size();
+
+        return firstIndex+length-1;
     }
 
     //lastIndexForPainter
@@ -93,5 +118,13 @@ public class Segment {
 
     public void setPlankList(List<Plank> plankList) {
         this.plankList = plankList;
+    }
+
+    public List<Painter> getPainterList() {
+        return painterList;
+    }
+
+    public void setPainterList(List<Painter> painterList) {
+        this.painterList = painterList;
     }
 }

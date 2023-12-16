@@ -3,10 +3,8 @@ package org.example;
 import org.example.GUI.StarterFrame;
 import org.example.model.*;
 import org.example.model.enums.Status;
-import org.example.service.view.DisplayView;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
