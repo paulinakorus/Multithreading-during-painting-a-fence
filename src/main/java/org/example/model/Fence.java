@@ -12,7 +12,7 @@ public class Fence {
     private static int lenghtOfSegment;
     private static PaintContainer container;
     private static Fence INSTANCE = null;
-    private List<Segment> segmentList = Collections.synchronizedList(new ArrayList<>());
+    private final List<Segment> segmentList = Collections.synchronizedList(new ArrayList<>());
 
     public Fence(int segmentsNumber, int lenghtOfSegment, PaintContainer container){
         Fence.segmentsNumber = segmentsNumber;
@@ -21,25 +21,27 @@ public class Fence {
         fenceStatus = Status.Unpainted;
 
         for(int i=0; i<segmentsNumber; i++){
-            segmentList.add(new Segment(lenghtOfSegment));
+            segmentList.add(new Segment(lenghtOfSegment, i));
         }
     }
 
-    public synchronized List<Segment> findSegmentByStatus(Status segmentStatus){
+    public List<Segment> findSegmentByStatus(Status segmentStatus){
         return segmentList.stream().filter(segment -> segment.getStatus().equals(segmentStatus)).toList();
     }
 
-    public synchronized Segment findSegmentToWorkOn(){
-        List<Segment> unpaintedSegments = findSegmentByStatus(Status.Unpainted);
-        if(unpaintedSegments != null){
-            return unpaintedSegments.get(0);
-        } else {
-            List<Segment> paintedSegments = findSegmentByStatus(Status.Painted);
-            if (paintedSegments != null) {
-                return paintedSegments.get(0);
+    public Segment findSegmentToWorkOn(){
+        synchronized (segmentList) {
+            List<Segment> unpaintedSegments = findSegmentByStatus(Status.Unpainted);
+            if(!unpaintedSegments.isEmpty()) {
+                return unpaintedSegments.get(0);
             } else {
-                fenceStatus = Status.Painted;
-                return null;
+                List<Segment> paintedSegments = findSegmentByStatus(Status.Painted);
+                if (!paintedSegments.isEmpty()) {
+                    return paintedSegments.get(0);
+                } else {
+                    fenceStatus = Status.Painted;
+                    return null;
+                }
             }
         }
     }
@@ -71,7 +73,4 @@ public class Fence {
         return segmentList;
     }
 
-    public void setSegmentList(List<Segment> segmentList) {
-        this.segmentList = segmentList;
-    }
 }

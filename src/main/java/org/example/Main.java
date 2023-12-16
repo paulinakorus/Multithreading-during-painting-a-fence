@@ -33,7 +33,7 @@ public class Main {
         DisplayView view = new DisplayView(fence, container);
         view.viewData();*/
 
-        Segment segment = new Segment(10);
+        Segment segment = new Segment(10, 0);
         List<Plank> planks = segment.getPlankList();
 
         planks.get(0).setStatus(Status.Painted);

@@ -6,13 +6,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Segment {
-    private static int id;
+    private int id;
     private Status status;
     private int lenght;
-    private List<Plank> plankList = Collections.synchronizedList(new ArrayList<>());
+    private volatile List<Plank> plankList = Collections.synchronizedList(new ArrayList<>());
     private List<Painter> painterList = new ArrayList<>();
-    public Segment(int lenght){
-        id+=1;
+    public Segment(int lenght, int id){
+        this.id  = id;
         this.lenght = lenght;
         this.status = Status.Unpainted;
 
@@ -88,12 +88,12 @@ public class Segment {
 
     //lastIndexForPainter
 
-    public static int getId() {
+    public int getId() {
         return id;
     }
 
-    public static void setId(int id) {
-        Segment.id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Status getStatus() {

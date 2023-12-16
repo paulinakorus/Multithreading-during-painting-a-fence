@@ -11,6 +11,7 @@ public class Plank {
     public Plank(int id){
         this.id = id;
         this.status = Status.Unpainted;
+        this.progress = 0.0;
     }
 
     public int getId() {

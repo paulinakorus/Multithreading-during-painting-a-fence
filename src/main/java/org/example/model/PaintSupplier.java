@@ -1,26 +1,41 @@
 package org.example.model;
 
+import org.example.GUI.FenceFrame;
+
 import java.util.concurrent.TimeUnit;
 
 public class PaintSupplier implements Runnable{
     Thread thread;
-    private PaintContainer container;
-    public PaintSupplier(PaintContainer container){
+    private final FenceFrame fenceFrame;
+    private final PaintContainer container;
+    public PaintSupplier(PaintContainer container, FenceFrame fenceFrame){
+        this.fenceFrame = fenceFrame;
         this.container = container;
     }
     public void refillContainter(){
         try {
-            container.setRefilling(true);
-            TimeUnit.SECONDS.sleep(15);
-            container.setLeftPaint(container.getVolume());
-            container.setRefilling(false);
+            synchronized (container) {
+                TimeUnit.SECONDS.sleep(2);
+                container.setLeftPaint(container.getVolume());
+                System.out.println("Pain supplied.");
+                fenceFrame.setUpLabels();
+            }
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
     @Override
-    public void run(){
-        if(container.isEmpty())
-            refillContainter();
+    public void run() {
+        while (true) {
+            try {
+                TimeUnit.SECONDS.sleep(7);
+                if(container.isEmpty())
+                    refillContainter();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+
+        }
     }
 }

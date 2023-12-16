@@ -35,7 +35,7 @@ public class PaintContainer {
             }
         }
     }
-    public boolean isEmpty(){
+    public synchronized boolean isEmpty(){
         if(leftPaint == 0)
             return true;
         return false;
