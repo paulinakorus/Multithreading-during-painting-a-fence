@@ -43,13 +43,17 @@ public class FenceFrame extends JFrame{
     }
 
     public void setUpLabels() {
-        DisplayView view = new DisplayView(fence, container);
-        synchronized (displayView){
-            containerLabel.setText(displayView.firstLine());
-            paintersNamesLabel.setText(displayView.paintersNamesLine());
-            paintersBucketsLabel.setText(displayView.paintersBucketsLine());
-            fenceLineLabel.setText(displayView.fenceLine());
-        }
+        new Thread(() -> {
+            String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
+            SwingUtilities.invokeLater(() -> setTextToLabels(line));
+        }).start();
+    }
+
+    public void setTextToLabels(String[] line){
+        containerLabel.setText(line[0]);
+        paintersNamesLabel.setText(line[1]);
+        paintersBucketsLabel.setText(line[2]);
+        fenceLineLabel.setText(line[3]);
     }
 
     public void setUpContainerLabel(DisplayView view){
