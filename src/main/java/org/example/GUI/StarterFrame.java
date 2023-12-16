@@ -46,19 +46,19 @@ public class StarterFrame extends JFrame{
                     int paintersNumber = Integer.parseInt(paintersNumberField.getText());
 
                     PaintContainer container = new PaintContainer(volumeOfContainer);
-                    Executor.execute(new PaintSupplier(container));
                     Fence fence = new Fence(numberOfSegments, lenghtOfSegment, container);
-                    createPainters(paintersNumber);
 
                     FenceFrame frame = new FenceFrame(fence, container, Painter.getPainterList());
+                    Executor.execute(new PaintSupplier(container, frame));
+                    createPainters(paintersNumber, frame);
                 }
             }
         });
     }
 
-    private void createPainters(int paintersNumber){
+    private void createPainters(int paintersNumber, FenceFrame fenceFrame){
         for (int i=0; i<paintersNumber; i++){
-            var painter = new Painter();
+            var painter = new Painter(fenceFrame, i);
             Executor.execute(painter);
         }
     }

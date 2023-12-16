@@ -8,12 +8,13 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         int paintersNumber;
         int numberOfSegments;
         int lenghtOfSegment;
         int volumeOfContainer;
 
-        /*Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Laboratoria 5");
         System.out.print("\tnumbers of painters: ");
         paintersNumber = input.nextInt();
@@ -31,9 +32,9 @@ public class Main {
         Fence fence = new Fence(numberOfSegments, lenghtOfSegment);
         PaintContainer container = new PaintContainer(volumeOfContainer);
         DisplayView view = new DisplayView(fence, container);
-        view.viewData();*/
+        view.viewData();
 
-        Segment segment = new Segment(10);
+        Segment segment = new Segment(10, 0);
         List<Plank> planks = segment.getPlankList();
 
         planks.get(0).setStatus(Status.Painted);
@@ -48,7 +49,7 @@ public class Main {
         planks.get(9).setStatus(Status.Painted);
 
         List<List<Plank>> unpaintedPlanksList = segment.getUnpaintedPlanksList();
-        List<Plank> longest = segment.getLongestUnpaintedPlanksList();
+        List<Plank> longest = segment.getLongestUnpaintedPlanksList();*/
 
         StarterFrame frame = new StarterFrame();
     }

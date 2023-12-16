@@ -4,13 +4,14 @@ import org.example.model.enums.Status;
 
 public class Plank {
     private int id;
-    private Status status;
+    private volatile Status status;
     private Double progress;
-    private Painter paintedBy = null;
+    private volatile Painter paintedBy = null;
 
     public Plank(int id){
         this.id = id;
         this.status = Status.Unpainted;
+        this.progress = 0.0;
     }
 
     public int getId() {

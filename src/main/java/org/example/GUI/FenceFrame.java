@@ -23,6 +23,7 @@ public class FenceFrame extends JFrame{
     private static Fence fence;
     private static PaintContainer container;
     private static List<Painter> painterList;
+    private final DisplayView displayView;
 
     public FenceFrame(Fence fence, PaintContainer container, List<Painter> painterList){
         this.setTitle("Fence");                                        // set title of frame
@@ -35,17 +36,17 @@ public class FenceFrame extends JFrame{
         FenceFrame.fence = fence;
         FenceFrame.container = container;
         FenceFrame.painterList = painterList;
+        displayView = new DisplayView(fence, container);
 
         setUpLabels();
         //setUpSimulation();
     }
 
-    public synchronized void setUpLabels(){
-        DisplayView view = new DisplayView(fence, container);
-        containerLabel.setText(view.firstLine());
-        paintersNamesLabel.setText(view.paintersNamesLine());
-        paintersBucketsLabel.setText(view.paintersBucketsLine());
-        fenceLineLabel.setText(view.fenceLine());
+    public void setUpLabels() {
+        containerLabel.setText(displayView.firstLine());
+        paintersNamesLabel.setText(displayView.paintersNamesLine());
+        paintersBucketsLabel.setText(displayView.paintersBucketsLine());
+        fenceLineLabel.setText(displayView.fenceLine());
     }
 
     public void setUpContainerLabel(DisplayView view){

@@ -3,17 +3,19 @@ package org.example.service;
 import org.example.model.*;
 
 public class DisplayView {
-    private Fence fence;
-    private PaintContainer container;
+    private final Fence fence;
+    private final PaintContainer container;
 
     public DisplayView(Fence fence, PaintContainer container){
         this.fence = fence;
         this.container = container;
     }
-    public String firstLine(){
-        Character refillingChar = container.getRefilling() ? 'S' : '.';
-        Character refillingPainter = container.getUsingBy() != null ? container.getUsingBy().getName() : '.';
-        return (refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
+    public String firstLine() {
+        synchronized (container) {
+            Character refillingChar = container.getRefilling() ? 'S' : '.';
+            Character refillingPainter = container.getUsingBy() != null ? container.getUsingBy().getName() : '.';
+            return (refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
+        }
     }
 
     public String paintersNamesLine(){
@@ -32,15 +34,17 @@ public class DisplayView {
         return line;
     }
 
-    public String fenceLine(){
+    public String fenceLine() {
         Character painterChar;
         String line = "|";
-        for (Segment segment : fence.getSegmentList()) {
-            for (Plank plank : segment.getPlankList()) {
-                painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
-                line += painterChar;
+        synchronized (fence) {
+            for (Segment segment : fence.getSegmentList()) {
+                for (Plank plank : segment.getPlankList()) {
+                    painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
+                    line += painterChar;
+                }
+                line += "|";
             }
-            line += "|";
         }
         return line;
     }
