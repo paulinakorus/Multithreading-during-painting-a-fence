@@ -15,8 +15,9 @@ public class Painter implements Runnable{
     private PaintBucket bucket = new PaintBucket();
     private static List<Painter> painterList = new ArrayList<>();
     private static final Fence fence = Fence.getInstance();
-    //private static FenceFrame fenceFrame = FenceFrame.getInstance();
-//    private Segment segmentToPaint = null;
+    private static final PaintSupplier supplier = PaintSupplier.getInstance();
+    private Segment segmentToPaint;
+
     private int lastIndex;
     private int startIndex;
     private int currentIndex;
@@ -26,8 +27,8 @@ public class Painter implements Runnable{
     public Painter(FenceFrame frame, int id){
         this.fenceFrame = frame;
         this.id += id;
-        name = (char)((int)'A' + (id-1));
-        speed = (random.nextInt(10)+1)*100;
+        name = (char)((int)'A' + (id));
+        speed = (random.nextInt(10)+5)*100;
         painterList.add(this);
     }
 
@@ -35,22 +36,38 @@ public class Painter implements Runnable{
     public void run(){
         try {
             while(fence.getStatus() != Status.Painted){
-                Segment segmentToPaint;
-                segmentToPaint = fence.findSegmentToWorkOn();
-                segmentToPaint.setStatus(Status.InProcces);
-                paintingSegment(segmentToPaint);
+                if(segmentToPaint != null){
+                    if (currentIndex >= segmentToPaint.getLenght()) {
+                        segmentToPaint.getPainterList().remove(this);
+                        segmentToPaint = null;
+                        startIndex = 0;
+                    }
+                }
+
+                if(segmentToPaint == null){
+                    segmentToPaint = fence.findSegmentToWorkOn();
+                    if(segmentToPaint != null){
+                        segmentToPaint.setStatus(Status.InProcces);
+                    }
+                }
+                paintingSegment();
             }
         } catch (InterruptedException ex) {
             System.out.println("Painter " + this.getId() + " job interrupted.");
         }
     }
 
-    public void paintingSegment(Segment segmentToPaint) throws InterruptedException {
+    public void paintingSegment() throws InterruptedException {
         Plank plankToPaint;
         synchronized (segmentToPaint) {
+            if(segmentToPaint == null){
+                return;
+            }
             if(segmentToPaint.getUnpaintedPlanksList().isEmpty()){
                 segmentToPaint.setStatus(Status.Painted);
                 segmentToPaint.getPainterList().remove(this);
+                segmentToPaint = null;
+                startIndex = 0;
                 return;
             } else if (segmentToPaint.getPainterList().isEmpty()){
                 segmentToPaint.addPainter(this);
@@ -60,57 +77,110 @@ public class Painter implements Runnable{
             } else if (!segmentToPaint.getPainterList().contains(this)){
                 segmentToPaint.addPainter(this);
                 List<Plank> longestPlanks = segmentToPaint.getLongestUnpaintedPlanksList();
-                segmentToPaint.getFragmentOfSegment(longestPlanks);
+                //segmentToPaint.getFragmentOfSegment(longestPlanks);
 
                 int startIndex = segmentToPaint.getIndexOfStart(longestPlanks);
                 this.startIndex = startIndex;
                 this.lastIndex = segmentToPaint.getLastIndex(longestPlanks);
                 currentIndex = startIndex;
-            } else {
-                ++currentIndex;
             }
-            plankToPaint = segmentToPaint.getPlankList().get(currentIndex);
-        }
 
-        paintingPlank(plankToPaint, segmentToPaint);
+            plankToPaint = segmentToPaint.getPlankList().get(currentIndex);
+            if (!plankToPaint.getStatus().equals(Status.Unpainted)) {
+                segmentToPaint.getPainterList().remove(this);
+                return;
+            }
+        }
+        paintingPlank(plankToPaint);
     }
 
-    public void paintingPlank(Plank plank, Segment segmentToPaint) throws InterruptedException {
-        synchronized (plank) {
-            if(!plank.getStatus().equals(Status.Unpainted)){
+    public void paintingPlank(Plank plankToPaint) throws InterruptedException {
+        synchronized (plankToPaint) {
+            if(!plankToPaint.getStatus().equals(Status.Unpainted)){
                 segmentToPaint.getPainterList().remove(this);
-            } else {
-                if(getBucket() == null || getBucket().getLeftPaint()<=0) {
-                    PaintContainer container = Fence.getContainer();
+                segmentToPaint = null;
+                startIndex = 0;
+                return;
+            }
+            if(getBucket() == null || getBucket().getLeftPaint()<=0) {
+                PaintContainer container = Fence.getContainer();
+                synchronized (container){
                     while (container.getUsingBy() != null || container.isEmpty()) {
-                        TimeUnit.SECONDS.sleep(1);
+                        TimeUnit.SECONDS.sleep(2);
                     }
                     container.setUsingBy(this);
                     try {
-                        TimeUnit.SECONDS.sleep(1);
                         container.getPaint(this);
+                        displayAll();
+                        TimeUnit.SECONDS.sleep(3);
+                        container.setUsingBy(null);
                     } catch (InterruptedException ex) {
                         System.out.println("Getting paint by painter has been interrupted.");
                     }
-                    container.setUsingBy(null);
-                } else {
-                    plank.setStatus(Status.InProcces);
-                    System.out.println("painter " + id + " painting " + plank.getId());
-                    while(plank.getProgress() < 1.0){
-                        plank.setProgress(plank.getProgress() + 0.2);
-                        Thread.sleep(this.speed);
-                    }
-                    bucket.setLeftPaint(bucket.getLeftPaint() - 1);
-                    plank.setPaintedBy(this);
-                    plank.setStatus(Status.Painted);
+                    //fenceFrame.setUpLabels();
+                    displayAll();
                 }
-            /* else {
-                container.refillContainer();
-                FenceFrame.setUpLabels();
-            }*/
+            }
+            if(segmentToPaint.paintPlank(plankToPaint, this)){
+                plankToPaint.setStatus(Status.InProcces);
+                System.out.println("painter " + id + " painting " + plankToPaint.getId());
+                while(plankToPaint.getProgress() < 1.0){
+                    plankToPaint.setProgress(plankToPaint.getProgress() + 0.2);
+                    Thread.sleep(this.speed);
+                }
+                bucket.setLeftPaint(bucket.getLeftPaint() - 1);
+                currentIndex++;
+                plankToPaint.setPaintedBy(this);
+                plankToPaint.setStatus(Status.Painted);
             }
             fenceFrame.setUpLabels();
+            displayAll();
         }
+    }
+
+    public void displayAll(){
+        System.out.println(firstLine());
+        System.out.println(paintersNamesLine());
+        System.out.println(paintersBucketsLine());
+        System.out.println(fenceLine());
+    }
+    public String firstLine() {
+        synchronized (FenceFrame.getContainer()) {
+            Character refillingChar = supplier.isRefilling() ? 'S' : '.';
+            Character refillingPainter = FenceFrame.getContainer().getUsingBy() != null ? FenceFrame.getContainer().getUsingBy().getName() : '.';
+            return (refillingChar + "[" + FenceFrame.getContainer().getLeftPaint() + "]" + refillingPainter);
+        }
+    }
+
+    public String paintersNamesLine(){
+        String line = "";
+        for (Painter painter : Painter.getPainterList()) {
+            line += painter.getName() + " ";
+        }
+        return line;
+    }
+
+    public String paintersBucketsLine(){
+        String line = "";
+        for (Painter painter : Painter.getPainterList()) {
+            line += painter.getBucket().getLeftPaint() + "  ";
+        }
+        return line;
+    }
+
+    public String fenceLine() {
+        Character painterChar;
+        String line = "|";
+        synchronized (fence) {
+            for (Segment segment : fence.getSegmentList()) {
+                for (Plank plank : segment.getPlankList()) {
+                    painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
+                    line += painterChar;
+                }
+                line += "|";
+            }
+        }
+        return line;
     }
     public int getStartIndex() {
         return startIndex;

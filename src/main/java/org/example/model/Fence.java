@@ -35,7 +35,7 @@ public class Fence {
             if(!unpaintedSegments.isEmpty()) {
                 return unpaintedSegments.get(0);
             } else {
-                List<Segment> paintedSegments = findSegmentByStatus(Status.Painted);
+                List<Segment> paintedSegments = findSegmentByStatus(Status.InProcces);
                 if (!paintedSegments.isEmpty()) {
                     return paintedSegments.get(0);
                 } else {

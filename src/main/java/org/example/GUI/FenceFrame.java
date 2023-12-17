@@ -37,16 +37,25 @@ public class FenceFrame extends JFrame{
         FenceFrame.container = container;
         FenceFrame.painterList = painterList;
         displayView = new DisplayView(fence, container);
-        
+
         setUpLabels();
         //setUpSimulation();
     }
 
     public void setUpLabels() {
-        containerLabel.setText(displayView.firstLine());
-        paintersNamesLabel.setText(displayView.paintersNamesLine());
-        paintersBucketsLabel.setText(displayView.paintersBucketsLine());
-        fenceLineLabel.setText(displayView.fenceLine());
+        new Thread(() -> {
+            while(true){
+                String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
+                SwingUtilities.invokeLater(() -> setTextToLabels(line));
+            }
+        }).start();
+    }
+
+    public void setTextToLabels(String[] line){
+        containerLabel.setText(line[0]);
+        paintersNamesLabel.setText(line[1]);
+        paintersBucketsLabel.setText(line[2]);
+        fenceLineLabel.setText(line[3]);
     }
 
     public void setUpContainerLabel(DisplayView view){
@@ -74,5 +83,29 @@ public class FenceFrame extends JFrame{
             INSTANCE = new FenceFrame(fence, container, painterList);
         }
         return INSTANCE;
+    }
+
+    public static Fence getFence() {
+        return fence;
+    }
+
+    public static void setFence(Fence fence) {
+        FenceFrame.fence = fence;
+    }
+
+    public static PaintContainer getContainer() {
+        return container;
+    }
+
+    public static void setContainer(PaintContainer container) {
+        FenceFrame.container = container;
+    }
+
+    public static List<Painter> getPainterList() {
+        return painterList;
+    }
+
+    public static void setPainterList(List<Painter> painterList) {
+        FenceFrame.painterList = painterList;
     }
 }

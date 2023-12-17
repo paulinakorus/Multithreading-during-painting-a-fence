@@ -5,13 +5,12 @@ import org.example.service.Executor;
 public class PaintContainer {
     private int volume;
     private volatile int leftPaint;
-    private volatile Boolean refilling;
-    private volatile Painter usingBy = null;
+    private volatile Painter usingBy;
 
     public PaintContainer(int volume){
         this.volume = volume;
-        refilling = false;
         leftPaint = volume;
+        usingBy = null;
     }
 
     public int getVolume() {
@@ -26,7 +25,7 @@ public class PaintContainer {
     public synchronized void getPaint(Painter painter){
         int backetVolume = painter.getBucket().getVolume();
         if(!isEmpty()){
-            if((leftPaint - backetVolume) > 0){
+            if((leftPaint - backetVolume) >= 0){
                 leftPaint -= backetVolume;
                 painter.getBucket().setLeftPaint(backetVolume);
             } else {
@@ -51,14 +50,6 @@ public class PaintContainer {
 
     public void setLeftPaint(int leftPaint) {
         this.leftPaint = leftPaint;
-    }
-
-    public Boolean getRefilling() {
-        return refilling;
-    }
-
-    public void setRefilling(Boolean refilling) {
-        this.refilling = refilling;
     }
 
     public Painter getUsingBy() {
