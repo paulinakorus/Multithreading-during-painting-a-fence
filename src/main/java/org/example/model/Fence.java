@@ -37,7 +37,7 @@ public class Fence {
             } else {
                 List<Segment> paintedSegments = findSegmentByStatus(Status.InProcces);
                 if (!paintedSegments.isEmpty()) {
-                    return paintedSegments.get(0);
+                    return paintedSegments.stream().filter(s -> s.getPlankList().stream().anyMatch(p -> p.getStatus().equals(Status.Unpainted))).findFirst().orElse(null);
                 } else {
                     fenceStatus = Status.Painted;
                     return null;

@@ -95,47 +95,43 @@ public class Painter implements Runnable{
     }
 
     public void paintingPlank(Plank plankToPaint) throws InterruptedException {
-        synchronized (plankToPaint) {
-            if(!plankToPaint.getStatus().equals(Status.Unpainted)){
-                segmentToPaint.getPainterList().remove(this);
-                segmentToPaint = null;
-                startIndex = 0;
-                return;
+        if(!plankToPaint.getStatus().equals(Status.Unpainted)){
+            segmentToPaint.getPainterList().remove(this);
+            segmentToPaint = null;
+            startIndex = 0;
+            return;
+        }
+        if(getBucket() == null || getBucket().getLeftPaint()<=0) {
+            PaintContainer container = Fence.getContainer();
+            while (container.getUsingBy() != null || container.isEmpty()) {
+                TimeUnit.SECONDS.sleep(2);
             }
-            if(getBucket() == null || getBucket().getLeftPaint()<=0) {
-                PaintContainer container = Fence.getContainer();
-                synchronized (container){
-                    while (container.getUsingBy() != null || container.isEmpty()) {
-                        TimeUnit.SECONDS.sleep(2);
-                    }
-                    container.setUsingBy(this);
-                    try {
-                        container.getPaint(this);
-                        displayAll();
-                        TimeUnit.SECONDS.sleep(3);
-                        container.setUsingBy(null);
-                    } catch (InterruptedException ex) {
-                        System.out.println("Getting paint by painter has been interrupted.");
-                    }
-                    //fenceFrame.setUpLabels();
-                    displayAll();
-                }
+            container.setUsingBy(this);
+            try {
+                int paintToAdd = container.getPaint(this);
+                fenceFrame.setUpLabels(fenceLine());
+                displayAll();
+                TimeUnit.SECONDS.sleep(3);
+                bucket.setLeftPaint(paintToAdd);
+                container.setUsingBy(null);
+            } catch (InterruptedException ex) {
+                System.out.println("Getting paint by painter has been interrupted.");
             }
-            if(segmentToPaint.paintPlank(plankToPaint, this)){
-                plankToPaint.setStatus(Status.InProcces);
-                System.out.println("painter " + id + " painting " + plankToPaint.getId());
-                while(plankToPaint.getProgress() < 1.0){
-                    plankToPaint.setProgress(plankToPaint.getProgress() + 0.2);
-                    Thread.sleep(this.speed);
-                }
-                bucket.setLeftPaint(bucket.getLeftPaint() - 1);
-                currentIndex++;
-                plankToPaint.setPaintedBy(this);
-                plankToPaint.setStatus(Status.Painted);
-            }
-            fenceFrame.setUpLabels();
+            fenceFrame.setUpLabels(fenceLine());
             displayAll();
         }
+        plankToPaint.setStatus(Status.InProcces);
+        System.out.println("painter " + id + " painting " + plankToPaint.getId());
+        while(plankToPaint.getProgress() < 1.0){
+            plankToPaint.setProgress(plankToPaint.getProgress() + 0.2);
+            Thread.sleep(this.speed);
+        }
+        bucket.setLeftPaint(bucket.getLeftPaint() - 1);
+        currentIndex++;
+        plankToPaint.setPaintedBy(this);
+        plankToPaint.setStatus(Status.Painted);
+        displayAll();
+        fenceFrame.setUpLabels(fenceLine());
     }
 
     public void displayAll(){
@@ -171,8 +167,9 @@ public class Painter implements Runnable{
     public String fenceLine() {
         Character painterChar;
         String line = "|";
-        synchronized (fence) {
-            for (Segment segment : fence.getSegmentList()) {
+        var segments = fence.getSegmentList();
+        synchronized (segments) {
+            for (Segment segment : segments) {
                 for (Plank plank : segment.getPlankList()) {
                     painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
                     line += painterChar;

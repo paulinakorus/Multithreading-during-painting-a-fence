@@ -9,6 +9,7 @@ import org.example.service.Executor;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class FenceFrame extends JFrame{
     private static FenceFrame INSTANCE = null;
@@ -43,12 +44,22 @@ public class FenceFrame extends JFrame{
     }
 
     public void setUpLabels() {
-        new Thread(() -> {
-            while(true){
-                String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
-                SwingUtilities.invokeLater(() -> setTextToLabels(line));
-            }
-        }).start();
+        this.setUpLabels(displayView.fenceLine());
+    }
+
+    public void setUpLabels(String fenceLine) {
+        if(!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(() -> {
+                String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), fenceLine};
+                setTextToLabels(line);
+            });
+        }
+//        new Thread(() -> {
+//            while(true){
+//                String[] line = {displayView.firstLine(), displayView.paintersNamesLine(), displayView.paintersBucketsLine(), displayView.fenceLine()};
+//                SwingUtilities.invokeLater(() -> setTextToLabels(line));
+//            }
+//        }).start();
     }
 
     public void setTextToLabels(String[] line){

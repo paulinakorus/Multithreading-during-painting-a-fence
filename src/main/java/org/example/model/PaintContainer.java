@@ -4,7 +4,7 @@ import org.example.service.Executor;
 
 public class PaintContainer {
     private int volume;
-    private volatile int leftPaint;
+    private volatile Integer leftPaint;
     private volatile Painter usingBy;
 
     public PaintContainer(int volume){
@@ -22,17 +22,21 @@ public class PaintContainer {
         Executor.execute(supplier);
     }*/
 
-    public synchronized void getPaint(Painter painter){
-        int backetVolume = painter.getBucket().getVolume();
+    public int getPaint(Painter painter) {
+        int bucketVolume = painter.getBucket().getVolume();
         if(!isEmpty()){
-            if((leftPaint - backetVolume) >= 0){
-                leftPaint -= backetVolume;
-                painter.getBucket().setLeftPaint(backetVolume);
+            if((leftPaint - bucketVolume) >= 0){
+                leftPaint -= bucketVolume;
+                return bucketVolume;
+                //painter.getBucket().setLeftPaint(bucketVolume);
             } else {
-                painter.getBucket().setLeftPaint(leftPaint);
+//                painter.getBucket().setLeftPaint(leftPaint);
+                int paint = leftPaint;
                 leftPaint = 0;
+                return paint;
             }
         }
+        return 0;
     }
     public synchronized boolean isEmpty(){
         if(leftPaint == 0)

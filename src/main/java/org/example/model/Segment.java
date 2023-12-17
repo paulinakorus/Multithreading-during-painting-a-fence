@@ -70,7 +70,7 @@ public class Segment {
         return newList;
     }
 
-    public synchronized boolean paintPlank(Plank plank, Painter painter) {
+    public boolean paintPlank(Plank plank, Painter painter) {
         if (!plank.getStatus().equals(Status.Unpainted)) {
             return false;
         }
@@ -90,10 +90,10 @@ public class Segment {
         int firstIndex = plankList.get(0).getId()-1;
         int length = plankList.size();
 
-        if(lenght%2 == 0)
-            return firstIndex + lenght/2;
+        if(length %2 == 0)
+            return firstIndex + length / 2;
         else
-            return firstIndex + lenght/2 + 1;
+            return firstIndex + length / 2 + 1;
     }
 
     public int getLastIndex(List<Plank> plankList) {

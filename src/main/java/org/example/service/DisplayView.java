@@ -5,42 +5,50 @@ import org.example.model.*;
 
 public class DisplayView {
     private final Fence fence;
-    private final PaintContainer container;
     private final PaintSupplier supplier = PaintSupplier.getInstance();
 
     public DisplayView(Fence fence, PaintContainer container){
         this.fence = fence;
-        this.container = container;
     }
     public String firstLine() {
-        synchronized (FenceFrame.getContainer()) {
-            Character refillingChar = supplier.isRefilling() ? 'S' : '.';
-            Character refillingPainter = FenceFrame.getContainer().getUsingBy() != null ? FenceFrame.getContainer().getUsingBy().getName() : '.';
-            return (refillingChar + "[" + FenceFrame.getContainer().getLeftPaint() + "]" + refillingPainter);
+        var container = FenceFrame.getContainer();
+        synchronized (container) {
+            synchronized (supplier) {
+                Character refillingChar = supplier.isRefilling() ? 'S' : '.';
+                Character refillingPainter = container.getUsingBy() != null ? container.getUsingBy().getName() : '.';
+                return (refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
+            }
         }
     }
 
     public String paintersNamesLine(){
         String line = "";
-        for (Painter painter : Painter.getPainterList()) {
-            line += painter.getName() + " ";
+        var painters = Painter.getPainterList();
+        synchronized (painters) {
+            for (Painter painter : painters) {
+                line += painter.getName() + " ";
+            }
+            return line;
         }
-        return line;
     }
 
     public String paintersBucketsLine(){
         String line = "";
-        for (Painter painter : Painter.getPainterList()) {
-            line += painter.getBucket().getLeftPaint() + "  ";
+        var painters = Painter.getPainterList();
+        synchronized (painters) {
+            for (Painter painter : painters) {
+                line += painter.getBucket().getLeftPaint() + "  ";
+            }
+            return line;
         }
-        return line;
     }
 
     public String fenceLine() {
         Character painterChar;
         String line = "|";
-        synchronized (fence) {
-            for (Segment segment : fence.getSegmentList()) {
+        var segments = fence.getSegmentList();
+        synchronized (segments) {
+            for (Segment segment : segments) {
                 for (Plank plank : segment.getPlankList()) {
                     painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
                     line += painterChar;
