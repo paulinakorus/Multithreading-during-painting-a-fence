@@ -1,20 +1,22 @@
 package org.example.service;
 
+import org.example.GUI.FenceFrame;
 import org.example.model.*;
 
 public class DisplayView {
     private final Fence fence;
     private final PaintContainer container;
+    private final PaintSupplier supplier = PaintSupplier.getInstance();
 
     public DisplayView(Fence fence, PaintContainer container){
         this.fence = fence;
         this.container = container;
     }
     public String firstLine() {
-        synchronized (container) {
-            Character refillingChar = container.getRefilling() ? 'S' : '.';
-            Character refillingPainter = container.getUsingBy() != null ? container.getUsingBy().getName() : '.';
-            return (refillingChar + "[" + container.getLeftPaint() + "]" + refillingPainter);
+        synchronized (FenceFrame.getContainer()) {
+            Character refillingChar = supplier.isRefilling() ? 'S' : '.';
+            Character refillingPainter = FenceFrame.getContainer().getUsingBy() != null ? FenceFrame.getContainer().getUsingBy().getName() : '.';
+            return (refillingChar + "[" + FenceFrame.getContainer().getLeftPaint() + "]" + refillingPainter);
         }
     }
 

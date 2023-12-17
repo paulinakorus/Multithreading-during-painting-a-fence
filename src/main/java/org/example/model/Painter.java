@@ -15,9 +15,9 @@ public class Painter implements Runnable{
     private PaintBucket bucket = new PaintBucket();
     private static List<Painter> painterList = new ArrayList<>();
     private static final Fence fence = Fence.getInstance();
-    Segment segmentToPaint;
-    //private static FenceFrame fenceFrame = FenceFrame.getInstance();
-//    private Segment segmentToPaint = null;
+    private static final PaintSupplier supplier = PaintSupplier.getInstance();
+    private Segment segmentToPaint;
+
     private int lastIndex;
     private int startIndex;
     private int currentIndex;
@@ -145,7 +145,7 @@ public class Painter implements Runnable{
     }
     public String firstLine() {
         synchronized (FenceFrame.getContainer()) {
-            Character refillingChar = FenceFrame.getContainer().getRefilling() ? 'S' : '.';
+            Character refillingChar = supplier.isRefilling() ? 'S' : '.';
             Character refillingPainter = FenceFrame.getContainer().getUsingBy() != null ? FenceFrame.getContainer().getUsingBy().getName() : '.';
             return (refillingChar + "[" + FenceFrame.getContainer().getLeftPaint() + "]" + refillingPainter);
         }
