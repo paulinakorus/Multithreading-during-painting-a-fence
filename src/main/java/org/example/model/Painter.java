@@ -111,6 +111,7 @@ public class Painter implements Runnable{
                     container.setUsingBy(this);
                     try {
                         container.getPaint(this);
+                        displayAll();
                         TimeUnit.SECONDS.sleep(3);
                         container.setUsingBy(null);
                     } catch (InterruptedException ex) {

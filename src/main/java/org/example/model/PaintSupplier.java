@@ -22,6 +22,7 @@ public class PaintSupplier implements Runnable {
                 TimeUnit.SECONDS.sleep(2);
                 refilling = true;
                 container.setLeftPaint(container.getVolume());
+                displayAll();
                 System.out.println("Paint supplied");
                 refilling = false;
                 //fenceFrame.setUpLabels();
@@ -44,6 +45,51 @@ public class PaintSupplier implements Runnable {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public void displayAll(){
+        System.out.println(firstLine());
+        System.out.println(paintersNamesLine());
+        System.out.println(paintersBucketsLine());
+        System.out.println(fenceLine());
+    }
+    public String firstLine() {
+        synchronized (FenceFrame.getContainer()) {
+            Character refillingChar = refilling ? 'S' : '.';
+            Character refillingPainter = FenceFrame.getContainer().getUsingBy() != null ? FenceFrame.getContainer().getUsingBy().getName() : '.';
+            return (refillingChar + "[" + FenceFrame.getContainer().getLeftPaint() + "]" + refillingPainter);
+        }
+    }
+
+    public String paintersNamesLine(){
+        String line = "";
+        for (Painter painter : Painter.getPainterList()) {
+            line += painter.getName() + " ";
+        }
+        return line;
+    }
+
+    public String paintersBucketsLine(){
+        String line = "";
+        for (Painter painter : Painter.getPainterList()) {
+            line += painter.getBucket().getLeftPaint() + "  ";
+        }
+        return line;
+    }
+
+    public String fenceLine() {
+        Character painterChar;
+        String line = "|";
+        synchronized (FenceFrame.getFence()) {
+            for (Segment segment : FenceFrame.getFence().getSegmentList()) {
+                for (Plank plank : segment.getPlankList()) {
+                    painterChar = plank.getPaintedBy() != null ? plank.getPaintedBy().getName() : '.';
+                    line += painterChar;
+                }
+                line += "|";
+            }
+        }
+        return line;
     }
 
     public static PaintSupplier getInstance() {
