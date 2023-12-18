@@ -73,7 +73,7 @@ public class Painter implements Runnable{
                 segmentToPaint.addPainter(this);
                 startIndex = 0;
                 lastIndex = segmentToPaint.getLenght() - 1;
-                currentIndex = 0;
+                currentIndex = startIndex;
             } else if (!segmentToPaint.getPainterList().contains(this)){
                 segmentToPaint.addPainter(this);
                 List<Plank> longestPlanks = segmentToPaint.getLongestUnpaintedPlanksList();
